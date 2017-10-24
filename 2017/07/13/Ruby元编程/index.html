@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Ruby元编程笔记 | young</title>
+  <meta name="description" content="类 方法 代码块 类宏 Eval方法  实例变量、方法、类实例变量（Instance Variables）是当你使用它们时，才会被建立的对象。因此，即使是同一个类的实例，也可以有不同的实例变量。 　　从技术层面上来看，一个对象（实例）只是存储了它的实例变量和其所属类的引用。因此，一个对象的实例变量仅存在于对象中，方法（我们称之为实例方法（Instance Methods））则存在于对象所属的类中">
+<meta name="keywords" content="ruby">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ruby元编程笔记">
+<meta property="og:url" content="http:/yiiiblog.com/2017/07/13/Ruby元编程/index.html">
+<meta property="og:site_name" content="NoteBook">
+<meta property="og:description" content="类 方法 代码块 类宏 Eval方法  实例变量、方法、类实例变量（Instance Variables）是当你使用它们时，才会被建立的对象。因此，即使是同一个类的实例，也可以有不同的实例变量。 　　从技术层面上来看，一个对象（实例）只是存储了它的实例变量和其所属类的引用。因此，一个对象的实例变量仅存在于对象中，方法（我们称之为实例方法（Instance Methods））则存在于对象所属的类中">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-10-24T01:49:03.290Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ruby元编程笔记">
+<meta name="twitter:description" content="类 方法 代码块 类宏 Eval方法  实例变量、方法、类实例变量（Instance Variables）是当你使用它们时，才会被建立的对象。因此，即使是同一个类的实例，也可以有不同的实例变量。 　　从技术层面上来看，一个对象（实例）只是存储了它的实例变量和其所属类的引用。因此，一个对象的实例变量仅存在于对象中，方法（我们称之为实例方法（Instance Methods））则存在于对象所属的类中">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http:/yiiiblog.com/2017/07/13/Ruby元编程/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="NoteBook" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <!-- font-awesome CSS -->
+  <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  
+    
+    
+
+</head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/yigger" target="_blank">
+          <img class="thumb-xl img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">暴龙</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="fa fa-map-marker"></i> 深圳</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat"><i class="fa fa-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+            <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <!-- <span class="ins-close ins-selectable"><i class="fa fa-times"></i></span> -->
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav">
+        
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="fa fa-fw fa-dashboard"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="fa fa-fw fa-delicious"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/yigger" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="fa fa-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/u/1961260371" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="fa fa-weibo"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            
+            <p>您好，您是第<span id="busuanzi_value_site_uv">0</span>位访客</p>
+            
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/laravel/">laravel</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rails/">rails</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ruby/">ruby</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ubuntu-php/">ubuntu, php</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/想到什么写什么/">想到什么写什么</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/汇编/">汇编</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法，基础/">算法，基础</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/脚本/">脚本</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/金融/">金融</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/C/" style="font-size: 13px;">C</a> <a href="/tags/JavaScript/" style="font-size: 13px;">JavaScript</a> <a href="/tags/docker/" style="font-size: 13px;">docker</a> <a href="/tags/laravel/" style="font-size: 13px;">laravel</a> <a href="/tags/nginx/" style="font-size: 13px;">nginx</a> <a href="/tags/rails/" style="font-size: 13px;">rails</a> <a href="/tags/ruby/" style="font-size: 13px;">ruby</a> <a href="/tags/ubuntu-php/" style="font-size: 13px;">ubuntu, php</a> <a href="/tags/想到什么写什么/" style="font-size: 13px;">想到什么写什么</a> <a href="/tags/汇编/" style="font-size: 13px;">汇编</a> <a href="/tags/算法，基础/" style="font-size: 13px;">算法，基础</a> <a href="/tags/脚本/" style="font-size: 13px;">脚本</a> <a href="/tags/金融/" style="font-size: 13px;">金融</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2017/10/23/股票/" class="title">股票语录</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2017-10-23T09:24:43.000Z" itemprop="datePublished">2017-10-23</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2017/10/15/汇编语言笔记（持更）/" class="title">汇编语言</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2017-10-15T09:24:43.000Z" itemprop="datePublished">2017-10-15</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2017/10/04/Docker/" class="title">Docker</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2017-10-04T03:16:00.000Z" itemprop="datePublished">2017-10-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2017/07/13/Ruby元编程/" class="title">Ruby元编程笔记</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2017-07-13T09:24:43.000Z" itemprop="datePublished">2017-07-13</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2017/06/11/数据结构历险记（持更）/" class="title">数据结构历险记</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2017-06-11T11:53:00.000Z" itemprop="datePublished">2017-06-11</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Ruby元编程" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Ruby元编程笔记
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="fa fa-calendar-check-o"></i>
+	<a href="/2017/07/13/Ruby元编程/" class="article-date">
+	  <time datetime="2017-07-13T09:24:43.000Z" itemprop="datePublished">2017-07-13</time>
+	</a>
+</span>
+        
+        
+  <span class="article-tag">
+    <i class="fa fa-tag"></i>
+	<a class="article-tag-link" href="/tags/ruby/">ruby</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="fa fa-eye" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			阅读<span id="busuanzi_value_page_pv">0</span>次
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="fa fa-commenting-o"></i> <a href="/2017/07/13/Ruby元编程/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+      
+    </div>
+    <div class="article-entry markdown-body" itemprop="articleBody">
+      
+        <ul>
+<li>类</li>
+<li>方法</li>
+<li>代码块</li>
+<li>类宏</li>
+<li>Eval方法</li>
+</ul>
+<h1 id="实例变量、方法、类"><a href="#实例变量、方法、类" class="headerlink" title="实例变量、方法、类"></a>实例变量、方法、类</h1><p>实例变量（Instance Variables）是当你使用它们时，才会被建立的对象。因此，即使是同一个类的实例，也可以有不同的实例变量。</p>
+<p>　　从技术层面上来看，一个对象（实例）只是存储了它的实例变量和其所属类的引用。因此，一个对象的实例变量仅存在于对象中，方法（我们称之为实例方法（Instance Methods））则存在于对象所属的类中。这也就是为什么同一个类的实例都共享类中的方法，却不能共享实例变量的原因了。</p>
+<h2 id="类"><a href="#类" class="headerlink" title="类"></a>类</h2><ul>
+<li>类也是对象。</li>
+<li>因为类也是一个对象，能应用于对象的皆可运用于类。类和任何对象一样，有它们自己的类，Class类即是Class类的实例。</li>
+<li>与其它的对象一样，类也有方法。对象的方法即是其所属类的实例方法。亦即，任何一个类的方法就是Class类的实例方法。</li>
+<li>所有的类有共同的祖先Object类（都是从Object类直接或间接继承而来），而Object类又继承自BasicObject类，Ruby类的根本。</li>
+<li>类名是常量（Constant）。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">n = Class.new</div><div class="line">puts n.ancestors</div><div class="line">puts n.supperclass</div><div class="line">puts n.supperclass.supperclass</div><div class="line">puts n.supperclass.supperclass.supperclass</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="打开类"><a href="#打开类" class="headerlink" title="打开类"></a>打开类</h2><p>其实这个就跟方法重定义是一样的结果，不过随意改动可能会产生严重的后果，比如说你改的这个方法在其它地方有使用到，所以这种方法还是慎用，除非你非常明确该方法不会造成其它后果。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">puts &apos;abc&apos;.replace(&apos;a&apos;) # a</div><div class="line">class String</div><div class="line">  def replace(string)</div><div class="line">    puts &apos;重新打开了类&apos;</div><div class="line">  end</div><div class="line">end</div><div class="line">&apos;abc&apos;.replace(&apos;a&apos;)  #&apos;重新打开了类&apos;</div></pre></td></tr></table></figure></p>
+<p>我们也可以使用<code>细化</code>来实现这个过程</p>
+<h2 id="细化"><a href="#细化" class="headerlink" title="细化"></a>细化</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">module StringExtensions</div><div class="line">  refine String do</div><div class="line">    def replace(string)</div><div class="line">       puts &apos;细化&apos;</div><div class="line">    end</div><div class="line">  end</div><div class="line">end</div></pre></td></tr></table></figure>
+<h1 id="在需要使用这个方法的地方使用using"><a href="#在需要使用这个方法的地方使用using" class="headerlink" title="在需要使用这个方法的地方使用using"></a>在需要使用这个方法的地方使用using</h1><p>如：<code>using StringExtensions</code><br>细化的好处就是不会全局影响，在你需要使用的地方using就可以了，风险相对较小。</p>
+<h1 id="调用方法"><a href="#调用方法" class="headerlink" title="调用方法"></a>调用方法</h1><p>类中的方法是怎么调用的？</p>
+<ul>
+<li>方法的查找（接收者和祖先链）<br>Ruby中要在类中查找一个方法，首先在它的类查找这个方法，如果没有，则往上查找，如此类推，直到祖先链的顶端，到最后，如果还没找到，会抛出method_missing异常。如果有了解过JS，那么你肯定非常明白这个过程，因为JS中的方法查找也是类似于这个过程。</li>
+<li>执行方法<br>在执行方法的过程中，Ruby始终需要一个接收者的引用，也就是<strong>self</strong><h3 id="self关键字"><a href="#self关键字" class="headerlink" title="self关键字"></a>self关键字</h3>任何时刻，Ruby中只有一个对象能充当当前对象，并且没有哪个对象能长期充当这个角色，调用一个方法时，接收者就成为了self，从这一刻起，所有的实例变量都是self的实例变量，所有没有明确指明接收者的方法都在<strong>self</strong>上调用。<br>举个栗子：<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">class Book</div><div class="line">  def get_library</div><div class="line">    @book_count = 1000</div><div class="line">    self</div><div class="line">  end</div><div class="line"></div><div class="line">  def self.is_my_book?(book)</div><div class="line">    false</div><div class="line">  end</div><div class="line">end</div><div class="line">b = Book.new</div><div class="line">b.get_library # 这个时候，b就充当了self</div><div class="line">b.is_my_book?(&apos;Ruby元编程&apos;) # undefined method `is_book?&apos; for #&lt;Book:0x00000002b92268 @library=1000&gt; (NoMethodError)</div><div class="line">Book.is_my_book?(&apos;Ruby元编程&apos;) # false</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>上面调用is_my_book?的方法为什么会报错？<br>那是因为 <code>self.is_my_book?(book)</code> 等于  <code>Book.is_my_book?(book)</code><br>当b调用的时候，self引用b实例对象，不等于Book，所以就会抛出找不到方法的错误</p>
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><ul>
+<li><p>动态派发(调用方法：对象.send(方法名，参数))</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">class Book</div><div class="line">  def create_book</div><div class="line">    &apos;Ruby元编程&apos;  </div><div class="line">  end  </div><div class="line">  </div><div class="line">  def update_book  </div><div class="line">    &apos;Ruby元编程&apos;  </div><div class="line">  end  </div><div class="line">  </div><div class="line">  def delete_book</div><div class="line">    &apos;Ruby元编程&apos;    </div><div class="line">  end  </div><div class="line"></div><div class="line">  def search_book</div><div class="line">    &apos;Ruby元编程&apos;  </div><div class="line">  end</div><div class="line">end  </div><div class="line">  </div><div class="line">s = Book.new  </div><div class="line">  </div><div class="line">puts s.send(:get_one_name)   </div><div class="line">puts s.send(:get_two_name)  </div><div class="line">puts s.send(:get_three_name) </div><div class="line">puts s.send(:get_four_name)</div></pre></td></tr></table></figure>
+</li>
+<li><p>动态定义</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">class Book</div><div class="line">  [&apos;create&apos;, &apos;update&apos;, &apos;delete&apos;, &apos;search&apos;].each do |item|</div><div class="line">    define_method(&quot;#&#123;item&#125;_book&quot;)&#123;</div><div class="line">      puts &quot;#&#123;item&#125;-Ruby元编程&quot;</div><div class="line">    &#125;</div><div class="line">  end</div><div class="line">end</div><div class="line">b = Book.new</div><div class="line">b.create_book # create-Ruby元编程</div><div class="line">b.update_book # update-Ruby元编程</div><div class="line">b.delete_book # delete-Ruby元编程</div><div class="line">b.search_book # search-Ruby元编程</div></pre></td></tr></table></figure>
+</li>
+<li><p>method_missing（幽灵方法）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"># encoding: utf-8</div><div class="line">class Book</div><div class="line">  def method_missing(name, *argc)</div><div class="line">    if [:create_book, :update_book, :delete_book, :search_book].include?(name)  </div><div class="line">      puts &quot;#&#123;name&#125;-Ruby元编程&quot; </div><div class="line">    else</div><div class="line">      super  </div><div class="line">    end</div><div class="line">  end</div><div class="line">end</div><div class="line">b = Book.new</div><div class="line">b.create_book# create-Ruby元编程</div><div class="line">b.update_book# update-Ruby元编程</div><div class="line">b.delete_book # delete-Ruby元编程</div><div class="line">b.search_book# search-Ruby元编程</div><div class="line">b.book # undefined method `book&apos;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="代码块"><a href="#代码块" class="headerlink" title="代码块"></a>代码块</h1><p>…</p>
+<h1 id="类宏"><a href="#类宏" class="headerlink" title="类宏"></a>类宏</h1><p>如果按照以前的做法，定义一个属性的读写必须将每个属性定义一个Get 和 Set方法，比如如下代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">class Post</div><div class="line">  def title=(title)</div><div class="line">    @title = title</div><div class="line">  end</div><div class="line">  def title</div><div class="line">    @title</div><div class="line">  end</div><div class="line"> ....</div><div class="line"> ....</div></pre></td></tr></table></figure></p>
+<p>如果像一篇文章这样，定义title,content,author等属性，就需要写3组这样的方法，非常不方便。这个时候，就要亮出Ruby的类宏<code>attr_accessor</code>（module的类里面的一个C语言写的方法，附上<a href="http://ruby-doc.org/core-2.0.0/Module.html#method-i-attr_accessor" target="_blank" rel="external">超链接</a>，以上代码就可以写成<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">class Post</div><div class="line">  attr_accessor :title</div><div class="line">end</div></pre></td></tr></table></figure></p>
+<h1 id="Eval方法"><a href="#Eval方法" class="headerlink" title="Eval方法"></a>Eval方法</h1>
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http:/yiiiblog.com/2017/07/13/Ruby元编程/" title="Ruby元编程笔记" target="_blank" rel="external">http:/yiiiblog.com/2017/07/13/Ruby元编程/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/yigger" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/yigger" target="_blank"><span class="text-dark">暴龙</span><small class="ml-1x">Web Developer</small></a></h3>
+        <div>坚持，不放弃。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+       
+    <div id="uyan_frame"></div>
+
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2017/10/04/Docker/" title="Docker"><i class="fa fa-angle-left" aria-hidden="true"></i>&nbsp;&nbsp;上一篇</a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2017/06/11/数据结构历险记（持更）/" title="数据结构历险记">下一篇&nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/yigger" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="fa fa-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/u/1961260371" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="fa fa-weibo"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.js"></script>
+<script src="/js/application.js"></script>
+  
+    
+    
+    
+        <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+    
+    
+        
+<script defer src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+    
+    
+        
+    
+    <script defer type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=[object Object]"></script>
+
+
+    
+    
+
+
+
+</body>
+</html>

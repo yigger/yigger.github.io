@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>跟着汤姆大叔学JS | young</title>
+  <meta name="description" content="学的知识点有点杂，东一点西一点，不过没办法，没买书只能先在网上学一下 以下内容均参考 Javascript秘密花园 汤姆大叔博客-深入理解Javascript系列  原型与原型链以前没用原型的写法，这种方法是不能体现OOP的思想的.. var a = 1,b = 2; function add(x, y) {     return x + y; } function subtract(x, y)">
+<meta name="keywords" content="JavaScript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="跟着汤姆大叔学JS">
+<meta property="og:url" content="http:/yiiiblog.com/2016/10/12/跟着汤姆大叔学js/index.html">
+<meta property="og:site_name" content="NoteBook">
+<meta property="og:description" content="学的知识点有点杂，东一点西一点，不过没办法，没买书只能先在网上学一下 以下内容均参考 Javascript秘密花园 汤姆大叔博客-深入理解Javascript系列  原型与原型链以前没用原型的写法，这种方法是不能体现OOP的思想的.. var a = 1,b = 2; function add(x, y) {     return x + y; } function subtract(x, y)">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-10-24T05:02:35.261Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="跟着汤姆大叔学JS">
+<meta name="twitter:description" content="学的知识点有点杂，东一点西一点，不过没办法，没买书只能先在网上学一下 以下内容均参考 Javascript秘密花园 汤姆大叔博客-深入理解Javascript系列  原型与原型链以前没用原型的写法，这种方法是不能体现OOP的思想的.. var a = 1,b = 2; function add(x, y) {     return x + y; } function subtract(x, y)">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http:/yiiiblog.com/2016/10/12/跟着汤姆大叔学js/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="NoteBook" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <!-- font-awesome CSS -->
+  <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  
+    
+    
+
+</head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/yigger" target="_blank">
+          <img class="thumb-xl img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">暴龙</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="fa fa-map-marker"></i> 深圳</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat"><i class="fa fa-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+            <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <!-- <span class="ins-close ins-selectable"><i class="fa fa-times"></i></span> -->
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav">
+        
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="fa fa-fw fa-dashboard"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="fa fa-fw fa-delicious"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/yigger" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="fa fa-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/u/1961260371" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="fa fa-weibo"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            
+            <p>您好，您是第<span id="busuanzi_value_site_uv">0</span>位访客</p>
+            
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/laravel/">laravel</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rails/">rails</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ruby/">ruby</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ubuntu-php/">ubuntu, php</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/想到什么写什么/">想到什么写什么</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/汇编/">汇编</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法，基础/">算法，基础</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/脚本/">脚本</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/金融/">金融</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/C/" style="font-size: 13px;">C</a> <a href="/tags/JavaScript/" style="font-size: 13px;">JavaScript</a> <a href="/tags/docker/" style="font-size: 13px;">docker</a> <a href="/tags/laravel/" style="font-size: 13px;">laravel</a> <a href="/tags/nginx/" style="font-size: 13px;">nginx</a> <a href="/tags/rails/" style="font-size: 13px;">rails</a> <a href="/tags/ruby/" style="font-size: 13px;">ruby</a> <a href="/tags/ubuntu-php/" style="font-size: 13px;">ubuntu, php</a> <a href="/tags/想到什么写什么/" style="font-size: 13px;">想到什么写什么</a> <a href="/tags/汇编/" style="font-size: 13px;">汇编</a> <a href="/tags/算法，基础/" style="font-size: 13px;">算法，基础</a> <a href="/tags/脚本/" style="font-size: 13px;">脚本</a> <a href="/tags/金融/" style="font-size: 13px;">金融</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2017/10/23/股票/" class="title">股票语录</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2017-10-23T09:24:43.000Z" itemprop="datePublished">2017-10-23</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2017/10/15/汇编语言笔记（持更）/" class="title">汇编语言</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2017-10-15T09:24:43.000Z" itemprop="datePublished">2017-10-15</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2017/10/04/Docker/" class="title">Docker</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2017-10-04T03:16:00.000Z" itemprop="datePublished">2017-10-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2017/07/13/Ruby元编程/" class="title">Ruby元编程笔记</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2017-07-13T09:24:43.000Z" itemprop="datePublished">2017-07-13</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2017/06/11/数据结构历险记（持更）/" class="title">数据结构历险记</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2017-06-11T11:53:00.000Z" itemprop="datePublished">2017-06-11</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-跟着汤姆大叔学js" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      跟着汤姆大叔学JS
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="fa fa-calendar-check-o"></i>
+	<a href="/2016/10/12/跟着汤姆大叔学js/" class="article-date">
+	  <time datetime="2016-10-11T16:02:31.000Z" itemprop="datePublished">2016-10-12</time>
+	</a>
+</span>
+        
+        
+  <span class="article-tag">
+    <i class="fa fa-tag"></i>
+	<a class="article-tag-link" href="/tags/JavaScript/">JavaScript</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="fa fa-eye" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			阅读<span id="busuanzi_value_page_pv">0</span>次
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="fa fa-commenting-o"></i> <a href="/2016/10/12/跟着汤姆大叔学js/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+      
+    </div>
+    <div class="article-entry markdown-body" itemprop="articleBody">
+      
+        <blockquote>
+<p>学的知识点有点杂，东一点西一点，不过没办法，没买书只能先在网上学一下</p>
+<p>以下内容均参考</p>
+<p>Javascript秘密花园</p>
+<p><a href="http://www.cnblogs.com/TomXu/archive/2011/12/15/2288411.html" target="_blank" rel="external">汤姆大叔博客-深入理解Javascript系列</a></p>
+</blockquote>
+<h1 id="原型与原型链"><a href="#原型与原型链" class="headerlink" title="原型与原型链"></a>原型与原型链</h1><p>以前没用原型的写法，这种方法是不能体现OOP的思想的..</p>
+<pre><code>var a = 1,b = 2;
+function add(x, y) {
+    return x + y;
+}
+function subtract(x, y) {
+    return x - y;
+}
+console.log(add(a,b));
+</code></pre><p>面向对象的写法一</p>
+<pre><code>var Caculation = function(x, y) {
+    this.x = x;
+    this.y = y;
+};
+Caculation.prototype = {
+    add:function(x, y) {
+        return x + y;
+    },
+    subtract:function(x, y) {
+        return x - y;
+    }
+
+};
+var caculationObj = new Caculation(5, 10);
+var total = caculationObj.add(8,8);
+console.log(total);
+</code></pre><p>这种写法就是利用<code>JavaScript 的对象可以作为哈希表使用，主要用来保存命名的键与值的对应关系。</code> 显然，这种方法还是不太好用的，因为实例化之后可以随意调用对象里面的方法，比如可以任意调用add方法和subtract..如果要避免这种随意调用的情况，在JAVA或者PHP中可以在函数前面声明public/private..到了JS中可就没有这种方法了..但是它有其它方法可以替代..比如下面这种写法。</p>
+<pre><code>var Caculation = function() {};
+Caculation.prototype = function(){
+    add = function(x, y) {
+        return x + y;
+    },
+    subtract = function(x, y) {
+        return x - y;
+    }
+    return {
+        A:add
+    }
+}();
+var caculationObj = new Caculation();
+var total = caculationObj.A(8,8);
+console.log(total);
+</code></pre><p>下面是其它写法，比较结合实际，上面和下面的写法其实都差不多。关键是都用到了OOP的思想。</p>
+<pre><code>var Caculation = function(x, y) {
+    this.x = x;
+    this.y = y;
+    this.xxy = function() {
+        return this.x * this.y;
+    }
+};
+
+Caculation.prototype = function(){
+    add = function() {
+        console.log(this.xxy()); //输出80
+        return this.x + this.y;
+    },
+    subtract = function() {
+        return this.x - this.y;
+    }
+    return {
+        Add:add
+    }
+}();
+var caculationObj = new Caculation(10,8); 
+var total = caculationObj.Add();
+console.log(total); //输出18
+</code></pre><p>这两种写法体现了OOP的思想，比最开始的第一种写法瞬间就高大上了好多啊有木有。</p>
+<p>假设有一个情景，类A需要访问类B的某一个公开属性，应该怎么做？很明显嘛，在PHP和JAVA中直接A extends B，继承不就好了嘛？Bingo,但是JS中怎么继承呢？这又是一个问题咯。看代码吧</p>
+<pre><code>var BaseCaculation = function(){
+    this.digital = 2;
+};
+BaseCaculation.prototype = {
+    A: function(x, y) {
+        return x + y;
+    }
+};
+
+var Caculation = function () {
+    this.tx = 3;
+}
+
+Caculation.prototype = new BaseCaculation();
+var Caculation = new Caculation();
+console.log(Caculation.A(1, 3));
+console.log(Caculation.digital);
+</code></pre><p><code>Caculation.prototype = new BaseCaculation();</code></p>
+<p>通过这句话就可以实现Caculation 继承 BaseCaculation.. 相当于 Caculation extends BaseCaculation..就像PHP中的继承一样，可能你会想问那接口和抽象呢？你问我吗？我也不确定呢，在以后学习中就会知道的。</p>
+<p>有时候，当你继承了某个类之后，你可能就会想覆盖掉原来的方法，自己重新再写一个，那你不可能去动原来的文件的吧，那个文件可能是其它人写的，而且别的地方也有调用。这时候就到了覆盖同名函数出场了。</p>
+<pre><code>var BaseCaculation = function(){
+    this.digital = 2;
+};
+BaseCaculation.prototype = {
+    A: function(x, y) {
+        return x + y;
+    }
+};
+
+var Caculation = function () {
+    this.tx = 3;
+}
+
+Caculation.prototype = new BaseCaculation;
+var Caculation = new Caculation();
+console.log(Caculation.A(1, 3)); //输出1+3=4
+//不满意？重写A方法
+BaseCaculation.prototype.A = function(x, y) {
+    return 2*x + 2*y;
+}
+console.log(Caculation.A(1, 3)); //输出2+6=8
+</code></pre><p>以上的方法就是可以覆盖掉原来类中的方法。称之为<code>原型重写</code></p>
+<p>关于原型链 function Foo() { this.value = 42; } Foo.prototype = { method: function() {} };</p>
+<pre><code>function Bar() {}
+
+// 设置Bar的prototype属性为Foo的实例对象
+Bar.prototype = new Foo();
+Bar.prototype.foo = &apos;Hello World&apos;;
+
+// 修正Bar.prototype.constructor为Bar本身
+Bar.prototype.constructor = Bar;
+
+var test = new Bar() // 创建Bar的一个新实例
+
+// 原型链
+test [Bar的实例]
+Bar.prototype [Foo的实例] 
+    { foo: &apos;Hello World&apos; }
+    Foo.prototype
+        {method: ...};
+        Object.prototype
+            {toString: ... /* etc. */};
+</code></pre><p>上面的例子中，test 对象从 Bar.prototype 和 Foo.prototype 继承下来；因此，它能访问 Foo 的原型方法 method。同时，它也能够访问那个定义在原型上的 Foo 实例属性 value。需要注意的是 new Bar() 不会创造出一个新的 Foo 实例，而是重复使用它原型上的那个实例；因此，所有的 Bar 实例都会共享相同的 value 属性。</p>
+<h1 id="属性查找"><a href="#属性查找" class="headerlink" title="属性查找"></a>属性查找</h1><p>当查找一个属性的时候，JS会向上遍历原型链，直到找到给定名称的属性为止，一直到原型链的最顶端，即是 Object.prototype..如果这个变量还没找到，则会返回undefined.</p>
+<pre><code>function foo() {
+    this.add = function (x, y) {
+        return x + y;
+    }
+}
+
+foo.prototype.add = function (x, y) {
+    return x + y + 10;
+}
+
+Object.prototype.subtract = function (x, y) {
+    return x - y;
+}
+
+var f = new foo();
+alert(f.add(1, 2)); //结果是3，而不是13
+alert(f.subtract(1, 2)); //结果是-1
+</code></pre><p>如上所示，foo实例会优先找本身属于自己的属性，如果找到了，则不再继续往上找。</p>
+<h1 id="hasOwnProperty函数"><a href="#hasOwnProperty函数" class="headerlink" title="hasOwnProperty函数"></a>hasOwnProperty函数</h1><blockquote>
+<p>hasOwnProperty是Object.prototype的一个方法，它可是个好东西，他能判断一个对象是否包含自定义属性而不是原型链上的属性，因为hasOwnProperty 是 JavaScript 中唯一一个处理属性但是不查找原型链的函数。</p>
+</blockquote>
+<pre><code>// 修改Object.prototype
+Object.prototype.bar = 1; 
+var foo = {goo: undefined};
+
+foo.bar; // 1
+&apos;bar&apos; in foo; // true
+
+foo.hasOwnProperty(&apos;bar&apos;); // false
+foo.hasOwnProperty(&apos;goo&apos;); // true
+</code></pre><p><code>只有 hasOwnProperty 可以给出正确和期望的结果，这在遍历对象的属性时会很有用。 没有其它方法可以用来排除原型链上的属性，而不是定义在对象自身上的属性。</code></p>
+<h1 id="hasOwnProperty-作为属性"><a href="#hasOwnProperty-作为属性" class="headerlink" title="hasOwnProperty 作为属性"></a>hasOwnProperty 作为属性</h1><blockquote>
+<p>JavaScript 不会保护 hasOwnProperty 被非法占用，因此如果一个对象碰巧存在这个属性， 就需要使用外部的 hasOwnProperty 函数来获取正确的结果。</p>
+</blockquote>
+<pre><code>var foo = {
+    hasOwnProperty: function() {
+        return false;
+    },
+    bar: &apos;Here be dragons&apos;
+};
+
+foo.hasOwnProperty(&apos;bar&apos;); // 总是返回 false
+
+// 使用其它对象的 hasOwnProperty，并将其上下文设置为foo
+({}).hasOwnProperty.call(foo, &apos;bar&apos;); // true
+</code></pre><h4 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h4><p>当检查对象上某个属性是否存在时，hasOwnProperty 是唯一可用的方法。 同时在使用 for in loop 遍历对象时，推荐总是使用 hasOwnProperty 方法， 这将会避免原型对象扩展带来的干扰。</p>
+<h1 id="类方法，对象方法，原型方法"><a href="#类方法，对象方法，原型方法" class="headerlink" title="类方法，对象方法，原型方法"></a>类方法，对象方法，原型方法</h1><pre><code>function People(name) {
+    // console.log(&quot;People Function&quot;);
+    this.name = name;
+    //对象方法
+    this.Introduce = function() {
+        console.log(&quot;This is My name:&quot; + this.name);
+    }
+}
+//类方法
+People.run = function() {
+    console.log(&quot;Run&quot;);
+};
+//原型方法
+People.prototype.introduceChinese = function() {
+    console.log(&quot;我的中文名是&quot; + this.name);
+};
+</code></pre><p>对象方法：必须创建实例才能调用，比如如果我想要调用People类的的Introduce.. 可以酱紫..</p>
+<pre><code>var p = new People(&quot;young&quot;);
+p.Introduce();//This is My name:young
+</code></pre><p>类方法：不需要创建实例就可以调用的方法..</p>
+<pre><code>People.run();
+</code></pre><p>原型方法：原型方法一般用于对象实例共享，比如People.prototype.sayName=function(){console.log(this.name);};在原型上面添加该方法，就能实现共享。这样就不用每一次初始化一个实例的时候，为其分配相应的内存了。</p>
+<p>参考链接：<a href="http://www.cnblogs.com/brucetie/p/4844526.html" target="_blank" rel="external">http://www.cnblogs.com/brucetie/p/4844526.html</a></p>
+<h1 id="Prototype的实际含义是什么？"><a href="#Prototype的实际含义是什么？" class="headerlink" title="Prototype的实际含义是什么？"></a>Prototype的实际含义是什么？</h1><p>javascript中的每个对象都有prototype属性，Javascript中对象的prototype属性的解释是：返回对象类型原型的引用。</p>
+<p>A.prototype = new B();</p>
+<p>理解prototype不应把它和继承混淆。A的prototype为B的一个实例，可以理解A将B中的方法和属性全部克隆了一遍。A能使用B的方法和属性。这里强调的是克隆而不是继承。可以出现这种情况：A的prototype是B的实例，同时B的prototype也是A的实例。</p>
+<pre><code>function baseClass() {
+    this.showMsg = function() {
+        console.log(&quot;showMsg&quot;);
+    }
+}
+function extendsClass () {}
+extendsClass.prototype = new baseClass(); //这里的意思就是克隆baseClass的方法
+var p1 = new extendsClass; //实例化extendsClass
+p1.showMsg(); //输出showMsg
+</code></pre><p>这里有个问题，两个类有同名函数应该怎么办？</p>
+<pre><code>function baseClass() {
+this.showMsg = function() {
+    console.log(&quot;showMsg&quot;);
+}
+}
+function extendsClass () {
+    this.showMsg = function() {
+        console.log(&quot;show exteds Msg&quot;);
+    }
+}
+extendsClass.prototype = new baseClass(); //这里的意思就是克隆baseClass的方法
+var p1 = new extendsClass; //实例化extendsClass
+p1.showMsg(); //输出show exteds Msg
+</code></pre><p>可见，函数运行的时候会先调用本体的函数，如果找不到，再到克隆的对象里面去寻找，换句话说,prototype不会克隆同名函数。</p>
+<p>那么又伴随一个问题，如果我执意要调用baseClass的showMsg方法呢？我该怎么调用？</p>
+<p>答案是用这种方法：obj1.func.call(obj) ， 意思是将obj看成obj1,调用func方法</p>
+<p>咱们来测试一下..</p>
+<pre><code>function baseClass() {
+    this.showMsg = function() {
+        console.log(&quot;showMsg&quot;);
+    }
+}
+baseClass.showMsg = function(){
+    console.log(&quot;类方法showMsg&quot;);
+}
+function extendsClass () {
+    this.showMsg = function() {
+        console.log(&quot;show exteds Msg&quot;);
+    }
+}
+extendsClass.prototype = new baseClass(); //这里的意思就是克隆baseClass的方法
+var p1 = new extendsClass; //实例化extendsClass
+p1.showMsg(); //输出show exteds Msg
+
+var baseinstance = new baseClass();
+baseinstance.showMsg.call(p1); //输出showMsg
+//这里调用的是对象方法。如果要调用类方法的话
+baseClass.showMsg.call(p1);
+</code></pre><p>参考链接：<a href="http://www.cnblogs.com/yjf512/archive/2011/06/03/2071914.html" target="_blank" rel="external">http://www.cnblogs.com/yjf512/archive/2011/06/03/2071914.html</a></p>
+<h1 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h1><blockquote>
+<p>JavaScript 中所有变量都可以当作对象使用，除了两个例外 null 和 undefined。</p>
+</blockquote>
+<h2 id="对象的使用和属性"><a href="#对象的使用和属性" class="headerlink" title="对象的使用和属性"></a>对象的使用和属性</h2><p>一个常见的误解是数字的字面值（literal）不能当作对象使用。这是因为 JavaScript 解析器的一个错误， 它试图将点操作符解析为浮点数字面值的一部分。</p>
+<pre><code>2.toString();//出错：SyntaxError
+2..toString(); //输出2
+2 .toString();//输出2
+(2).toString(); //输出2
+</code></pre><h2 id="删除属性"><a href="#删除属性" class="headerlink" title="删除属性"></a>删除属性</h2><pre><code>var obj = {
+    bar: 1,
+    foo: 2,
+    baz: 3
+};
+obj.bar = undefined;
+obj.foo = null;
+delete obj.baz;
+for (var i in obj) {
+    if (obj.hasOwnProperty(i)) {
+        dd(i, &apos;&apos; + obj[i]);
+    }
+}
+//结果输出bar,foo ...可见只有delete才能删除属性.
+</code></pre><h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><pre><code>function foo(){}
+</code></pre><p>上面的方法会在执行前被 解析(hoisted)，因此它存在于当前上下文的任意一个地方， 即使在函数定义体的上面被调用也是对的。</p>
+<pre><code>foo(); // 正常运行，因为foo在代码运行前已经被创建
+function foo() {}
+</code></pre><h1 id="看汤姆大叔的Javascript"><a href="#看汤姆大叔的Javascript" class="headerlink" title="看汤姆大叔的Javascript"></a>看汤姆大叔的Javascript</h1><h2 id="01-编写高质量JavaScript代码的基本要点"><a href="#01-编写高质量JavaScript代码的基本要点" class="headerlink" title="01.编写高质量JavaScript代码的基本要点"></a>01.编写高质量JavaScript代码的基本要点</h2><h3 id="全局变量的问题"><a href="#全局变量的问题" class="headerlink" title="全局变量的问题"></a>全局变量的问题</h3><p>全局变量的问题在于，你的JavaScript应用程序和web页面上的所有代码都共享了这些全局变量，他们住在同一个全局命名空间，所以当程序的两个不同部分定义同名但不同作用的全局变量的时候，命名冲突在所难免。</p>
+<p>web页面包含不是该页面开发者所写的代码也是比较常见的，例如：</p>
+<ul>
+<li>第三方的JavaScript库</li>
+<li>广告方的脚本代码</li>
+<li>第三方用户跟踪和分析脚本代码</li>
+<li>不同类型的小组件，标志和按钮</li>
+</ul>
+<p>比方说，该第三方脚本定义了一个全局变量，叫做result；接着，在你的函数中也定义一个名为result的全局变量。其结果就是后面的变量覆盖前面的，第三方脚本就一下子嗝屁啦！</p>
+<p>因此，要想和其他脚本成为好邻居的话，尽可能少的使用全局变量是很重要的。在书中后面提到的一些减少全局变量的策略，例如命名空间模式或是函数立即自动执行，但是要想让全局变量少最重要的还是始终使用var来声明变量。</p>
+<p>由于JavaScript的两个特征，不自觉地创建出全局变量是出乎意料的容易。首先，你可以甚至不需要声明就可以使用变量；第二，JavaScript有隐含的全局概念，意味着你不声明的任何变量都会成为一个全局对象属性。参考下面的代码：</p>
+<pre><code>function sum(x, y) {
+   // 不推荐写法: 隐式全局变量 
+   result = x + y;
+   return result;
+}
+</code></pre><p>此段代码中的result没有声明。代码照样运作正常，但在调用函数后你最后的结果就多一个全局命名空间，这可以是一个问题的根源。</p>
+<p>经验法则是始终使用var声明变量，正如改进版的sum()函数所演示的：</p>
+<pre><code>function sum(x, y) {
+   var result = x + y;
+   return result;
+}
+</code></pre><h3 id="忘记var的副作用-Side-Effects-When-Forgetting-var"><a href="#忘记var的副作用-Side-Effects-When-Forgetting-var" class="headerlink" title="忘记var的副作用(Side Effects When Forgetting var)"></a>忘记var的副作用(Side Effects When Forgetting var)</h3><p>隐式全局变量和明确定义的全局变量间有些小的差异，就是通过delete操作符让变量未定义的能力。</p>
+<ul>
+<li>通过var创建的全局变量（任何函数之外的程序中创建）是不能被删除的。</li>
+<li><p>无var创建的隐式全局变量（无视是否在函数中创建）是能被删除的。 这表明，在技术上，隐式全局变量并不是真正的全局变量，但它们是全局对象的属性。属性是可以通过delete操作符删除的，而变量是不能的：</p>
+<pre><code>// 定义三个全局变量
+var global_var = 1;
+global_novar = 2; // 反面教材
+(function () {
+   global_fromfunc = 3; // 反面教材
+}());
+
+// 试图删除
+delete global_var; // false
+delete global_novar; // true
+delete global_fromfunc; // true
+
+// 测试该删除
+typeof global_var; // &quot;number&quot;
+typeof global_novar; // &quot;undefined&quot;
+typeof global_fromfunc; // &quot;undefined&quot;
+</code></pre></li>
+</ul>
+<p>参考链接：<a href="http://www.cnblogs.com/TomXu/archive/2011/12/28/2286877.html" target="_blank" rel="external">http://www.cnblogs.com/TomXu/archive/2011/12/28/2286877.html</a></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http:/yiiiblog.com/2016/10/12/跟着汤姆大叔学js/" title="跟着汤姆大叔学JS" target="_blank" rel="external">http:/yiiiblog.com/2016/10/12/跟着汤姆大叔学js/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/yigger" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/yigger" target="_blank"><span class="text-dark">暴龙</span><small class="ml-1x">Web Developer</small></a></h3>
+        <div>坚持，不放弃。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+       
+    <div id="uyan_frame"></div>
+
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2016/10/15/利用shell脚本备份数据库/" title="利用shell脚本备份数据库"><i class="fa fa-angle-left" aria-hidden="true"></i>&nbsp;&nbsp;上一篇</a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/yigger" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="fa fa-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/u/1961260371" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="fa fa-weibo"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.js"></script>
+<script src="/js/application.js"></script>
+  
+    
+    
+    
+        <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+    
+    
+        
+<script defer src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+    
+    
+        
+    
+    <script defer type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=[object Object]"></script>
+
+
+    
+    
+
+
+
+</body>
+</html>

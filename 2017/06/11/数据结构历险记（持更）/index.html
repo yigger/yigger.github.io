@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>数据结构历险记 | young</title>
+  <meta name="description" content="最近在看《深入理解操作系统》这本书的时候，发现里面涉及了好多关于数据结构的东西。而自己却又半桶水（此时此刻有些悔恨大一没有好好听数据结构的课以及没有好好学C语言，导致现在都是在补回以前的一些的东西:)手动挥手），现在再翻看回以前那本《数据结构》思路确实清晰了不少。所以写篇文章记录一下自己的想法还有实践的代码。  学数据结构跟学数学一样最重要的是要学会画图！！！学数据结构跟学数学一样最重要的是要学">
+<meta name="keywords" content="算法，基础">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构历险记">
+<meta property="og:url" content="http:/yiiiblog.com/2017/06/11/数据结构历险记（持更）/index.html">
+<meta property="og:site_name" content="NoteBook">
+<meta property="og:description" content="最近在看《深入理解操作系统》这本书的时候，发现里面涉及了好多关于数据结构的东西。而自己却又半桶水（此时此刻有些悔恨大一没有好好听数据结构的课以及没有好好学C语言，导致现在都是在补回以前的一些的东西:)手动挥手），现在再翻看回以前那本《数据结构》思路确实清晰了不少。所以写篇文章记录一下自己的想法还有实践的代码。  学数据结构跟学数学一样最重要的是要学会画图！！！学数据结构跟学数学一样最重要的是要学">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4633437-4721153bee3069b9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4633437-8084975810c97b2a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4633437-cc10f5ad4e9f1fa5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4633437-aa7c5159af410b34.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4633437-bbcd299f5f04db37.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4633437-cacdbf362fdfecfb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4633437-ee53a03b5ed31346.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4633437-252efebde8e0e94b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4633437-380c538f380c2ff5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-10-24T01:47:45.572Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数据结构历险记">
+<meta name="twitter:description" content="最近在看《深入理解操作系统》这本书的时候，发现里面涉及了好多关于数据结构的东西。而自己却又半桶水（此时此刻有些悔恨大一没有好好听数据结构的课以及没有好好学C语言，导致现在都是在补回以前的一些的东西:)手动挥手），现在再翻看回以前那本《数据结构》思路确实清晰了不少。所以写篇文章记录一下自己的想法还有实践的代码。  学数据结构跟学数学一样最重要的是要学会画图！！！学数据结构跟学数学一样最重要的是要学">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/4633437-4721153bee3069b9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http:/yiiiblog.com/2017/06/11/数据结构历险记（持更）/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="NoteBook" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <!-- font-awesome CSS -->
+  <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  
+    
+    
+
+</head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/yigger" target="_blank">
+          <img class="thumb-xl img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">暴龙</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="fa fa-map-marker"></i> 深圳</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat"><i class="fa fa-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+            <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <!-- <span class="ins-close ins-selectable"><i class="fa fa-times"></i></span> -->
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav">
+        
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="fa fa-fw fa-dashboard"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="fa fa-fw fa-delicious"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/yigger" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="fa fa-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/u/1961260371" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="fa fa-weibo"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            
+            <p>您好，您是第<span id="busuanzi_value_site_uv">0</span>位访客</p>
+            
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/laravel/">laravel</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rails/">rails</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ruby/">ruby</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ubuntu-php/">ubuntu, php</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/想到什么写什么/">想到什么写什么</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/汇编/">汇编</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法，基础/">算法，基础</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/脚本/">脚本</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/金融/">金融</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/C/" style="font-size: 13px;">C</a> <a href="/tags/JavaScript/" style="font-size: 13px;">JavaScript</a> <a href="/tags/docker/" style="font-size: 13px;">docker</a> <a href="/tags/laravel/" style="font-size: 13px;">laravel</a> <a href="/tags/nginx/" style="font-size: 13px;">nginx</a> <a href="/tags/rails/" style="font-size: 13px;">rails</a> <a href="/tags/ruby/" style="font-size: 13px;">ruby</a> <a href="/tags/ubuntu-php/" style="font-size: 13px;">ubuntu, php</a> <a href="/tags/想到什么写什么/" style="font-size: 13px;">想到什么写什么</a> <a href="/tags/汇编/" style="font-size: 13px;">汇编</a> <a href="/tags/算法，基础/" style="font-size: 13px;">算法，基础</a> <a href="/tags/脚本/" style="font-size: 13px;">脚本</a> <a href="/tags/金融/" style="font-size: 13px;">金融</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2017/10/23/股票/" class="title">股票语录</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2017-10-23T09:24:43.000Z" itemprop="datePublished">2017-10-23</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2017/10/15/汇编语言笔记（持更）/" class="title">汇编语言</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2017-10-15T09:24:43.000Z" itemprop="datePublished">2017-10-15</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2017/10/04/Docker/" class="title">Docker</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2017-10-04T03:16:00.000Z" itemprop="datePublished">2017-10-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2017/07/13/Ruby元编程/" class="title">Ruby元编程笔记</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2017-07-13T09:24:43.000Z" itemprop="datePublished">2017-07-13</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2017/06/11/数据结构历险记（持更）/" class="title">数据结构历险记</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2017-06-11T11:53:00.000Z" itemprop="datePublished">2017-06-11</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-数据结构历险记（持更）" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      数据结构历险记
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="fa fa-calendar-check-o"></i>
+	<a href="/2017/06/11/数据结构历险记（持更）/" class="article-date">
+	  <time datetime="2017-06-11T11:53:00.000Z" itemprop="datePublished">2017-06-11</time>
+	</a>
+</span>
+        
+        
+  <span class="article-tag">
+    <i class="fa fa-tag"></i>
+	<a class="article-tag-link" href="/tags/算法，基础/">算法，基础</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="fa fa-eye" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			阅读<span id="busuanzi_value_page_pv">0</span>次
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="fa fa-commenting-o"></i> <a href="/2017/06/11/数据结构历险记（持更）/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+      
+    </div>
+    <div class="article-entry markdown-body" itemprop="articleBody">
+      
+        <blockquote>
+<p>最近在看《深入理解操作系统》这本书的时候，发现里面涉及了好多关于数据结构的东西。而自己却又半桶水（此时此刻有些悔恨大一没有好好听数据结构的课以及没有好好学C语言，导致现在都是在补回以前的一些的东西:)手动挥手），现在再翻看回以前那本《数据结构》思路确实清晰了不少。所以写篇文章记录一下自己的想法还有实践的代码。</p>
+</blockquote>
+<h4 id="学数据结构跟学数学一样最重要的是要学会画图！！！"><a href="#学数据结构跟学数学一样最重要的是要学会画图！！！" class="headerlink" title="学数据结构跟学数学一样最重要的是要学会画图！！！"></a>学数据结构跟学数学一样最重要的是要学会画图！！！</h4><h4 id="学数据结构跟学数学一样最重要的是要学会画图！！！-1"><a href="#学数据结构跟学数学一样最重要的是要学会画图！！！-1" class="headerlink" title="学数据结构跟学数学一样最重要的是要学会画图！！！"></a>学数据结构跟学数学一样最重要的是要学会画图！！！</h4><h4 id="学数据结构跟学数学一样最重要的是要学会画图！！！-2"><a href="#学数据结构跟学数学一样最重要的是要学会画图！！！-2" class="headerlink" title="学数据结构跟学数学一样最重要的是要学会画图！！！"></a>学数据结构跟学数学一样最重要的是要学会画图！！！</h4><p>重要的事情说3遍，画图之后对理解问题真的很直观很直观，图画好后，思路也清晰了直接对着图撸代码完成没压力，所以建议大家学习数据结构的时候多画画图。</p>
+<h3 id="Realloc函数介绍"><a href="#Realloc函数介绍" class="headerlink" title="Realloc函数介绍"></a>Realloc函数介绍</h3><p>先判断当前的指针是否有足够的连续空间，如果有，扩大mem_address指向的地址，并且将mem_address返回，如果空间不够，先按照newsize指定的大小分配空间，将原有数据从头到尾拷贝到新分配的内存区域，而后释放原来mem_address所指内存区域（注意：原来指针是自动释放，不需要使用free），同时返回新分配的内存区域的首地址。即重新分配存储器块的地址。</p>
+<p>代码示例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">//栈满的时候增加栈的大小</div><div class="line">if(s-&gt;top -s-&gt;base &gt;=s-&gt;stacksize) &#123;</div><div class="line">s-&gt;base = (SElemtype*)realloc(s-&gt;base, (s-&gt;stacksize +STACKINCREMENT) *sizeof(SElemtype));</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="一、线性表"><a href="#一、线性表" class="headerlink" title="一、线性表"></a>一、线性表</h3><p>线性表可以说是最简单的数据结构，它的描述为：<em>n个数据元素的有限序列</em>。记为：L=(a1,a2,…,an)，它的样子大概长得跟下图差不多，0-4是下标，1-5是值（其实就是数组嘛）</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4633437-4721153bee3069b9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>线性表的顺序存储结构是最简单最常用的数据结构：<em>用一段连续地址依次存储表中的数据元素</em>。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">typedefstruct&#123;</div><div class="line">Elemtype*elem;</div><div class="line">intlength;//当前长度</div><div class="line">intlistList;//当前分配的总长度</div><div class="line">&#125;List;</div></pre></td></tr></table></figure></p>
+<p>线性表插入相当于就是在数组的某个位置插入一个值，如：<br><code>a[0] = 1; a[1] = 2; a[2] = 3; a[3] = 5;</code></p>
+<p>如果要在a[1]的位置插入一个等于1.5的数，那么是不是就变成<br><code>a[0] = 1; a[1] = 1.5 a[2] = 2; a[3] = 3;a[4] = 3;</code></p>
+<p>观察一下变化，很明显就是在原来的基础上，数据依次在插入的位置往后顺序移动，同理删除也是一样的，删除的元素后，依次往左移动数据</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4633437-8084975810c97b2a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4633437-cc10f5ad4e9f1fa5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p> 从上面可以看出，无论是插入还是删除，元素都需要依次移动（ps:删除最后一个元素不需要移动），所以时间复杂度都是O(n)</p>
+<p>附上代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">//线性表插入元素</div><div class="line">void</div><div class="line">ListInsert(List&amp;List,ElemtypeinsertValue,intn) &#123;</div><div class="line">if(n&lt; 0 ||n&gt;List.listList) exit(0);</div><div class="line">if(n&gt;List.length) &#123;</div><div class="line">Elemtype*reset;</div><div class="line">reset = (Elemtype*)realloc(List.elem, (List.length +LISTINCREMENT) *sizeof(Elemtype));</div><div class="line">if(!reset) exit(0);</div><div class="line">List.elem = reset;</div><div class="line">List.length +=LISTINCREMENT;</div><div class="line">&#125;</div><div class="line">Elemtype*wait = &amp;List.elem[n];//获得待插入位置的指针地址</div><div class="line">Elemtype*last = &amp;List.elem[List.length - 1];//获得最后一个元素 - 1的地址</div><div class="line">for(; last &gt;= wait; last--) &#123;</div><div class="line">  //遍历插入位置后的指针，元素往后依次移动</div><div class="line">  *(last + 1) = *last;</div><div class="line">&#125;</div><div class="line">*wait =insertValue;</div><div class="line">++List.length;</div><div class="line">&#125;</div><div class="line">//线性表删除元素</div><div class="line">Elemtype</div><div class="line">ListDelete(List&amp;list,intn) &#123;</div><div class="line">if(n&lt; 0 ||n&gt;list.listList) exit(0);</div><div class="line">ElemtypedeleteElem, *p;</div><div class="line">p = &amp;list.elem[n];</div><div class="line">deleteElem = *p;</div><div class="line">int*q =list.length +list.elem - 1;</div><div class="line">for(++p; p &lt;= q; p++) &#123;</div><div class="line">  printf(&quot;%d--\n&quot;, *p);</div><div class="line">  *(p - 1) = *p;</div><div class="line">&#125;</div><div class="line">--list.length;</div><div class="line">returndeleteElem;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="二、栈"><a href="#二、栈" class="headerlink" title="二、栈"></a>二、栈</h3><blockquote>
+<p>栈的特点是先进后出，表尾端称为栈顶，表头端称为栈底。</p>
+</blockquote>
+<p>栈的数据结构体：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">//定义栈的结构体</div><div class="line">typedefstructstack&#123;</div><div class="line">SElemtype*top;//指向栈顶元素</div><div class="line">SElemtype*base;//指向栈底元素</div><div class="line">intstacksize;</div><div class="line">&#125;Sqstack, *pStack;</div></pre></td></tr></table></figure></p>
+<p>数据入栈示意图</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4633437-aa7c5159af410b34.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>如上图所示，每次入栈所需要操作的就是栈顶元素+1（同时也需要考虑栈满的情况）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">void</div><div class="line">push(Sqstack*s,SElemtypee) &#123;</div><div class="line">//栈满的情况下追加空间</div><div class="line">if(s-&gt;top -s-&gt;base &gt;=s-&gt;stacksize) &#123;</div><div class="line">s-&gt;base = (SElemtype*)realloc(s-&gt;base, (s-&gt;stacksize +STACKINCREMENT) *sizeof(SElemtype));</div><div class="line">if(!s-&gt;base) exit(0);</div><div class="line">s-&gt;top =s-&gt;base +s-&gt;stacksize;</div><div class="line">s-&gt;stacksize +=STACKINCREMENT;</div><div class="line">&#125;</div><div class="line">*(s-&gt;top) =e;</div><div class="line">s-&gt;top++;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>数据出栈示意图</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4633437-bbcd299f5f04db37.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>出栈所需要操作的就是栈顶元素-1<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">void</div><div class="line">pop(Sqstack*s,SElemtype&amp;e) &#123;</div><div class="line">if(s-&gt;top ==s-&gt;base) exit(0);</div><div class="line">e= *--s-&gt;top;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="三、队列"><a href="#三、队列" class="headerlink" title="三、队列"></a>三、队列</h3><blockquote>
+<p>队列是先进先出的，有两种队列，一种是链表队列，另一种是线性表队列</p>
+</blockquote>
+<h4 id="1-链表队列"><a href="#1-链表队列" class="headerlink" title="1.链表队列"></a>1.链表队列</h4><p>链表队列实际上就是单链表的基础上增加多两个指针指向队头和队尾<br><img src="http://upload-images.jianshu.io/upload_images/4633437-cacdbf362fdfecfb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h4 id="2-循环队列"><a href="#2-循环队列" class="headerlink" title="2.循环队列"></a>2.循环队列</h4><p>循环队列是基于顺序表的，线性表的队列的数据结构</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4633437-ee53a03b5ed31346.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">//定义循环队列的结构体</div><div class="line">typedefstructsqQueue&#123;</div><div class="line">Elemtype*base;</div><div class="line">intfront;</div><div class="line">intrear;</div><div class="line">&#125;sqQueue;</div></pre></td></tr></table></figure>
+<p>跟线性表的声明差不多，但是要注意队列溢出的情况</p>
+<p>考虑下面情况，<code>最后队头和队尾都指向同一个元素，在这种情况下进队</code>，就会造成溢出，如下图</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4633437-252efebde8e0e94b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>为了解决这种问题，有两种选择，一种是追加空间，另一种是下一个元素进队放入到队列开头，如下图</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4633437-380c538f380c2ff5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>很明显选用第二种，因 为第一种会造成空间浪费(以前用过的还能用为什么不好好利用呢？)</p>
+<p>如果选用第二种的话，栈满栈空都是Q.front == Q.rear（队头==队尾）</p>
+<p>为了解决这种问题，约定队列空的情况是Q.front== Q.rear，而队列满的情况是队尾+1== 队头</p>
+<p>使用这种判断方法，巧妙的解决了这种判断问题。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">//进队</div><div class="line">voidinsqQueue(sqQueue&amp;queue,Elemtypevalue) &#123;</div><div class="line">if((queue.rear + 1) %QUEUE_MAX==queue.front) exit(0);//队列满了</div><div class="line">queue.base[queue.rear] =value;</div><div class="line">queue.rear = (queue.rear + 1) %QUEUE_MAX;</div><div class="line">&#125;</div><div class="line">//出队</div><div class="line">ElemtypeoutsqQueue(sqQueue&amp;queue) &#123;</div><div class="line">ElemtypeoutElem;</div><div class="line">outElem =queue.base[queue.front];</div><div class="line">queue.front = (queue.front + 1) %QUEUE_MAX;</div><div class="line">returnoutElem;</div><div class="line">&#125;</div><div class="line">//判断栈的长度</div><div class="line">intlengthsqQueue(sqQueuequeue) &#123;</div><div class="line">return(queue.rear -queue.front +QUEUE_MAX) %QUEUE_MAX;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http:/yiiiblog.com/2017/06/11/数据结构历险记（持更）/" title="数据结构历险记" target="_blank" rel="external">http:/yiiiblog.com/2017/06/11/数据结构历险记（持更）/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/yigger" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/yigger" target="_blank"><span class="text-dark">暴龙</span><small class="ml-1x">Web Developer</small></a></h3>
+        <div>坚持，不放弃。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+       
+    <div id="uyan_frame"></div>
+
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2017/07/13/Ruby元编程/" title="Ruby元编程笔记"><i class="fa fa-angle-left" aria-hidden="true"></i>&nbsp;&nbsp;上一篇</a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2017/04/16/缓冲区/" title="缓冲区">下一篇&nbsp;&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/yigger" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="fa fa-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/u/1961260371" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="fa fa-weibo"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.js"></script>
+<script src="/js/application.js"></script>
+  
+    
+    
+    
+        <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+    
+    
+        
+<script defer src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+    
+    
+        
+    
+    <script defer type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=[object Object]"></script>
+
+
+    
+    
+
+
+
+</body>
+</html>
